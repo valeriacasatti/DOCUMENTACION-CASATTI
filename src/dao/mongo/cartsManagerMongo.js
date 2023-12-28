@@ -88,9 +88,7 @@ export class CartsManagerMongo {
       const cart = await this.getCartById(cid);
       if (cart) {
         //verificar si el product existe en el cart
-        const product = cart.products.find(
-          (product) => product.productId._id == pid
-        );
+        const product = cart.products.find((product) => product._id == pid);
         if (product) {
           //incrementar quantity del producto
           product.quantity += 1;
@@ -116,10 +114,9 @@ export class CartsManagerMongo {
   async deleteProductCart(cid, pid) {
     try {
       const cart = await this.getCartById(cid);
-
-      const product = cart.products.find(
-        (product) => product.productId._id == pid
-      );
+      console.log(cart.products);
+      const product = cart.products.find((product) => product.productId == pid);
+      console.log(product);
       if (product) {
         const newProducts = cart.products.filter((product) => {
           return product.productId._id != pid;

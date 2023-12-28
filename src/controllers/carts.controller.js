@@ -58,15 +58,13 @@ export class CartsController {
   //agregar productos al arreglo del carrito seleccionado
   static addProduct = async (req, res) => {
     try {
-      const cid = "656915f9d275608fc814127f";
-      const { pid } = req.params;
+      const { cid, pid } = req.params;
 
       //verificar que el cart y el product existan
       await CartsService.getCartById(cid);
       await ProductsService.getProductById(pid);
 
       const result = await CartsService.addProduct(cid, pid);
-      console.log(result);
 
       res.json({
         status: "success",

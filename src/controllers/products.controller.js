@@ -3,6 +3,7 @@ import { generateProduct } from "../helpers/mock.js";
 import { EError } from "../enums/EError.js";
 import { CustomError } from "../services/errors/customError.service.js";
 import { updateProductError } from "../services/errors/createError.service.js";
+import { logger } from "../helpers/logger.js";
 
 export class ProductsController {
   //get products

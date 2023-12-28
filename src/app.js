@@ -4,8 +4,6 @@ import cookieParser from "cookie-parser";
 import passport from "passport";
 import { __dirname } from "./utils.js";
 import { engine } from "express-handlebars";
-import expressHandlebars from "express-handlebars";
-import helpers from "handlebars-helpers";
 import { Server } from "socket.io";
 import { viewsRouter } from "./routes/views.routes.js";
 import { productsRouter } from "./routes/products.routes.js";
@@ -20,6 +18,8 @@ import { initializePassport } from "./config/passport.config.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import { logger } from "./helpers/logger.js";
 import { usersRouter } from "./routes/users.routes.js";
+import { swaggerSpecs } from "./config/swagger.config.js";
+import swaggerUI from "swagger-ui-express";
 
 const port = 8080;
 const app = express();
@@ -35,14 +35,7 @@ initializePassport();
 app.use(passport.initialize());
 
 //handlebars
-const { ifEquals } = helpers(["comparison"]);
-const handlebars = expressHandlebars.create({
-  extname: ".hbs",
-  helpers: {
-    ifEquals,
-  },
-});
-app.engine(".hbs", handlebars.engine);
+app.engine(".hbs", engine({ extname: ".hbs" }));
 app.set("view engine", ".hbs");
 app.set("views", path.join(__dirname, "/views"));
 
@@ -60,6 +53,7 @@ app.use("/api/carts", cartsRouter);
 app.use("/api/chats", chatsRouter);
 app.use("/api/sessions", sessionsRouter);
 app.use("/api/users", usersRouter);
+app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(swaggerSpecs));
 
 app.use(errorHandler);
 

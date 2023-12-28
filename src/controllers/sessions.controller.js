@@ -79,7 +79,13 @@ export class SessionsController {
     try {
       const { email } = req.body;
       const user = await UsersService.getUserByEmail(email);
-      const emailToken = generateEmailToken(email, 60 * 60);
+      if (!user) {
+        res.render("forgotPassword", {
+          error: `Unregistered user`,
+          style: "forgotPassword.css",
+        });
+      }
+      const emailToken = generateEmailToken(email, 3600);
       await sendChangePasswordEmail(req, email, emailToken);
 
       res.render("login", {

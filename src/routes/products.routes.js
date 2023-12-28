@@ -6,6 +6,7 @@ const router = Router();
 
 //get products
 router.get("/", ProductsController.getProducts);
+
 //add product
 router.post(
   "/",
